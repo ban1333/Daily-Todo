@@ -1,24 +1,12 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+NOTES:
 
-Things you may want to cover:
 
-* Ruby version
+to create a schedule from a todo:
+```
+todo = Todo.create()
+        todo.create_schedule()
+```
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+        
