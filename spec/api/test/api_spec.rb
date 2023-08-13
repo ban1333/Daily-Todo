@@ -1,7 +1,7 @@
 require 'rails_helper'
 require_relative '../../../app/api/test/api'
 
-RSpec.describe 'Endpoints'do
+describe 'Endpoints' do
   context 'when the endpoint "world" is hit' do
     context 'the response' do
       let(:res) { JSON.parse(response.body)['response'] }
