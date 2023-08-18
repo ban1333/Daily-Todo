@@ -2,7 +2,6 @@ require "grape"
 
 module Test
   class API < Grape::API
-    format :json
 
     get :world do
       {
