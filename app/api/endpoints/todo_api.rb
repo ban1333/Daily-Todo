@@ -11,7 +11,7 @@ module Endpoints
       end
       post :todo do
         Todo.create!({
-                       name: 'ahhh',
+                       name: params[:name],
                        info: params[:info]
                      })
       end
