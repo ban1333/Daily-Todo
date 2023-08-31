@@ -19,6 +19,7 @@ module Endpoints
                        info: params[:info]
                      })
       end
+
       desc 'Update a todo'
       params do
         requires :id, type: String, desc: 'the id of the todo'
@@ -30,6 +31,14 @@ module Endpoints
                                                 name: params[:todo][:name],
                                                 info: params[:todo][:info]
                                               })
+      end
+
+      desc 'Delete a todo'
+      params do
+        requires :id, type: String, desc: 'the id of the todo'
+      end
+      delete ':id' do
+        Todo.find(params[:todo][:id]).delete
       end
     end
   end

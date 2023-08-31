@@ -119,7 +119,25 @@ describe 'todo' do
       end
 
       context 'when there are multiple todos' do
+        let(:request) { delete '/Todo/:id', :params => { todo: { id: Todo.first.id } } }
+        let(:name) { 'ahh' }
+        let(:info) { 'ohh' }
 
+        before do
+          Todo.create!({ name: 'delete', info: 'me' })
+
+          2.times do
+            Todo.create!({ name: name, info: info })
+          end
+        end
+
+        it 'deletes only one todo' do
+          expect(Todo.count).to be 3
+          request
+          expect(Todo.count).to be 2
+          expect(Todo.first.name).to eq name
+          expect(Todo.second.name).to eq name
+        end
       end
     end
   end
