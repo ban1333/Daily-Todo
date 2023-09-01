@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'todo' do
+describe 'TodoApi' do
   let(:res) { JSON.parse(response.body)[0] }
 
   context 'todo endpoints' do
