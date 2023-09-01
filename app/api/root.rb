@@ -5,4 +5,5 @@ class Root < Grape::API
 
   mount Test::API
   mount Endpoints::TodoApi
+  mount Endpoints::ScheduleApi
 end
