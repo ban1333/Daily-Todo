@@ -157,4 +157,19 @@ describe 'ScheduleApi' do
       end
     end
   end
+
+  context 'when the delete endpoint is hit' do
+    let(:request) { delete '/Schedule/:id', :params => { schedule: { id: schedule.id }} }
+
+    context 'when there is one schedule in the database' do
+      let!(:schedule) { Schedule.create({ todo_id: todo.id }) }
+      let(:todo) { Todo.create!({ name: 'ohh', info: 'ahh' }) }
+
+      it 'deletes the schedule' do
+        expect(Schedule.count).to be 1
+        request
+        expect(Schedule.count).to be 0
+      end
+    end
+  end
 end

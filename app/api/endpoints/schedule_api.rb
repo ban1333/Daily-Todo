@@ -55,6 +55,14 @@ module Endpoints
                                                         saturday: params[:saturday]
                          })
       end
+
+      desc 'Deletes a Schedule'
+      params do
+        requires :id, type: String, desc: 'the id of the schedule'
+      end
+      delete ':id' do
+        Schedule.find(params[:schedule][:id]).delete
+      end
     end
   end
 end
