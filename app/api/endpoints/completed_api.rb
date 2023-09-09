@@ -11,7 +11,7 @@ module Endpoints
 
       desc 'Returns all of a single todo\'s Completed Todos'
       params do
-        requires :id, type: String, desc: 'the id of the todo you wish to change'
+        requires :id, type: String, desc: 'the id of the todo you wish to get'
       end
       get ':id' do
         Completed.where(todo_id: params[:id])
