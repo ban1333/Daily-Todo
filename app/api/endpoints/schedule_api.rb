@@ -8,6 +8,14 @@ module Endpoints
         Schedule.all
       end
 
+      desc 'Returns all of a single todo\'s schedule'
+      params do
+        requires :id, type: String, desc: 'the id of the todo you wish to get'
+      end
+      get ':id' do
+        Schedule.where(todo_id: params[:schedule][:id])
+      end
+
       desc 'Creates a Schedule'
       params do
         requires :todo_id, type: String, desc: 'the id of the Todo'
