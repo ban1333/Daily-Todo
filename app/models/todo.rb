@@ -1,14 +1,9 @@
 class Todo < ApplicationRecord
-  include ActiveModel::AttributeMethods
-  attribute_method_prefix 'set_'
-
   has_one :schedule
 
-  attr_accessor :name, :info
-
-  private
-  def set_attribute(attribute, modified_value)
-    send("#{attribute}=", modified_value)
+  scope :todos_for_today, -> do
+    Todo.all
+        .joins(:schedule)
+      .where(schedules: {:"#{DateTime.now.strftime("%A").downcase}" => true})
   end
-
 end
