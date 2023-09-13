@@ -103,6 +103,69 @@ describe 'TodoApi' do
       end
     end
 
+    context 'get todos for today' do
+      let(:request) { get '/Todo/today_todo' }
+
+      context 'when there are no todos scheduled for today' do
+        it 'returns nil' do
+          request
+          expect(res).to eq nil
+        end
+      end
+
+      context 'when there is one todo scheduled for today' do
+        let(:todo) { Todo.create!({ name: 'ooga', info: 'booga' })}
+        let!(:schedule) { Schedule.create!({ todo_id: todo.id, sunday: 1, monday: 1, tuesday: 1, wednesday: 1, thursday: 1, friday: 1, saturday: 1 }) }
+
+        it 'returns the todo' do
+          request
+          expect(res).to eq todo
+        end
+      end
+
+      context 'when there are multiple todos scheduled for today' do
+        let(:todo_1) { Todo.create!({ name: 'ooga', info: 'booga' })}
+        let!(:schedule_1) { Schedule.create!({ todo_id: todo_1.id, sunday: 1, monday: 1, tuesday: 1, wednesday: 1, thursday: 1, friday: 1, saturday: 1 }) }
+        let(:todo_2) { Todo.create!({ name: 'ooga', info: 'booga' })}
+        let!(:schedule_2) { Schedule.create!({ todo_id: todo_2.id, sunday: 1, monday: 1, tuesday: 1, wednesday: 1, thursday: 1, friday: 1, saturday: 1 }) }
+        let(:todo_3) { Todo.create!({ name: 'ooga', info: 'booga' })}
+        let!(:schedule_3) { Schedule.create!({ todo_id: todo_3.id, sunday: 1, monday: 1, tuesday: 1, wednesday: 1, thursday: 1, friday: 1, saturday: 1 }) }
+
+        it 'returns three todos' do
+          request
+          expect(JSON.parse(response.body).count).to eq 3
+          expect(JSON.parse(response.body)[0]).to eq todo_1
+          expect(JSON.parse(response.body)[1]).to eq todo_2
+          expect(JSON.parse(response.body)[2]).to eq todo_3
+        end
+      end
+
+      context 'when there are multiple todos scheduled for today but some are not' do
+        let(:todo_1) { Todo.create!({ name: 'ooga', info: 'booga' })}
+        let!(:schedule_1) { Schedule.create!({ todo_id: todo_1.id, sunday: 1, monday: 1, tuesday: 1, wednesday: 1, thursday: 1, friday: 1, saturday: 1 }) }
+        let(:todo_2) { Todo.create!({ name: 'ooga', info: 'booga' })}
+        let!(:schedule_2) { Schedule.create!({ todo_id: todo_2.id, sunday: 1, monday: 1, tuesday: 1, wednesday: 1, thursday: 1, friday: 1, saturday: 1 }) }
+        let(:todo_3) { Todo.create!({ name: 'ooga', info: 'booga' })}
+        let!(:schedule_3) { Schedule.create!({ todo_id: todo_3.id, sunday: 1, monday: 1, tuesday: 1, wednesday: 1, thursday: 1, friday: 1, saturday: 1 }) }
+        let(:todo_not_today_1) { Todo.create!({ name: 'ooga', info: 'booga' })}
+        let!(:schedule_not_today_1) { Schedule.create!({ todo_id: todo_not_today_1.id, sunday: 0, monday: 0, tuesday: 0, wednesday: 0, thursday: 0, friday: 0, saturday: 0 }) }
+        let(:todo_not_today_2) { Todo.create!({ name: 'ooga', info: 'booga' })}
+        let!(:schedule_not_today_2) { Schedule.create!({ todo_id: todo_not_today_2.id, sunday: 0, monday: 0, tuesday: 0, wednesday: 0, thursday: 0, friday: 0, saturday: 0 }) }
+
+        before do
+          todo_1.schedule_id = schedule_1
+        end
+
+        it 'only returns the three todos scheduled for today' do
+          request
+          expect(JSON.parse(response.body).count).to eq 3
+          expect(JSON.parse(response.body)[0]).to eq todo_1
+          expect(JSON.parse(response.body)[1]).to eq todo_2
+          expect(JSON.parse(response.body)[2]).to eq todo_3
+        end
+      end
+    end
+
     context 'delete' do
       context 'when there is one todo' do
         let(:request) { delete '/Todo/:id', :params => { todo: { id: Todo.first.id } } }

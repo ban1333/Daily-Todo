@@ -3,6 +3,11 @@ require "grape"
 module Endpoints
   class TodoApi < Grape::API
     resource Todo do
+      desc 'Get today\'s todo'
+      get :today_todo do
+        Todo.todos_for_today
+      end
+
       desc 'Gets all todos'
       get :todo do
         Todo.all
