@@ -28,3 +28,15 @@ irb(main):004:0> Todo.find(2).name
 
 ```
 Why is it different? Shouldn't the third command return true since they should be returning `"project"` 
+
+
+to start backend
+```
+rails s
+```
+
+to start frontend
+```
+cd front-end
+npm start
+```
